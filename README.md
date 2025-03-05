@@ -1,10 +1,10 @@
 ## Entropy-Based Decoding for Retrieval-Augmented Large Language Models
 
-#### Requirements
+### Requirements
 
 Please install the main requirements by running `pip install -r requirements.txt`.
 
-#### Response Generation and Evaluation
+### Response Generation and Evaluation
 
 1. Download all the processed data from the [link](https://drive.google.com/drive/folders/1zsrCbw8T7Q2ZsW0MGt3Kwvg4N3z9rqmn?usp=sharing) under `processed_data` and place it in the `./processed_data/` folder.
 2. To reproduce our method's experimental results in open-domain QA (Table 1 of the paper), please refer to `./scripts/odqa_scripts/`.
@@ -14,7 +14,7 @@ If you want to construct retrieval data from scratch, you first need to download
 
 
 
-#### Acknowledgements
+### Acknowledgements
 
 Our code primarily refers to [NBCE](https://github.com/bojone/NBCE) and [lost-in-the-middle](https://github.com/nelson-liu/lost-in-the-middle). Thanks for their awesome implementations.
 
