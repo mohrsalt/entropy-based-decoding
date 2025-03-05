@@ -1,5 +1,7 @@
 ## Entropy-Based Decoding for Retrieval-Augmented Large Language Models
 
+This repo provides the source code and data of our paper.
+
 ### Requirements
 
 Please install the main requirements by running `pip install -r requirements.txt`.
