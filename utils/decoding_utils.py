@@ -8,11 +8,10 @@ logger = logging.getLogger(__name__)
 
 class ParallelDecoding(object):
 
-    def __init__(self, model_path: str, tokenizer_path: str, device: torch.device, using_norm=False, using_entropy=False):
-        self.model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.bfloat16).to(device)
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
-        self.tokenizer.padding_side = "left" # left padding
-        self.tokenizer.pad_token = self.tokenizer.eos_token  # for llama
+    def __init__(self, model: str, tokenizer: str, device: torch.device, using_norm=False, using_entropy=False):
+        self.model = AutoModelForCausalLM.from_pretrained(model, torch_dtype=torch.bfloat16).to(device)
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer)
+
         self.device = device
         self.using_norm = using_norm
         self.using_entropy = using_entropy
@@ -78,62 +77,6 @@ class ParallelDecoding(object):
         logits = lm_head(last_token_states) 
         return logits
 
-    @torch.inference_mode()
-    def leens_using_logits(self, prompt_template: str, prompt_template_wo_results: str, question: str, document_texts: List[str], max_tokens=100, beta=0., temp_cpmi = 0.1, metric_criterion = "entropy", temperature = 0.5, sampling_method = "greedy", reweight_logit=False, alpha=0.0, candidate_layers=None):
-        
-        batch_doc = [prompt_template.format(search_results=document, question=question) for document in document_texts]
-        first_ele = prompt_template_wo_results.format(question=question)
-        batch = batch_doc
-        inputs = self.tokenizer(batch, padding='longest', return_tensors='pt').to(self.device)
-        input_ids = inputs.input_ids
-        n = input_ids.shape[0]
-        attention_mask = inputs.attention_mask
-        past_key_values = None 
-
-        generate_token_list = [] 
-        token_document_idx = []
-
-        for i in range(max_tokens):
-            # print(*i)
-            outputs = self.model(input_ids=input_ids,
-                            attention_mask=attention_mask,
-                            return_dict=True,
-                            use_cache=True,
-                            output_hidden_states=True,
-                            past_key_values=past_key_values)
-            past_key_values = outputs.past_key_values
-            logits = outputs.logits[:, -1, :] # (bsz, vocab_size)
-
-            if metric_criterion == "weighted_entropy":
-                temp = temp_cpmi
-                # print(torch.logsumexp(logits[1:], dim=-1))
-                probs = torch.nn.functional.softmax(logits, dim =-1) # (bsz, vocab_size)
-                entropy = - (probs * torch.log(probs + 1e-16)).sum(dim=-1) # (bsz, )
-                entropy_weight = torch.nn.functional.softmax((-entropy) / temp, dim=-1).unsqueeze(1) # (bsz-1,)
-                logits_max = (logits * entropy_weight).sum(dim=0)
-                k = entropy.argmin() + 1
-            else:
-                raise NotImplementedError
-
-            probs = torch.nn.functional.softmax(logits_max / temperature, dim = -1) # still (vocab_size, )
-
-            if sampling_method == "greedy":
-                next_token_idx = torch.argmax(probs)
-            else:
-                raise NotImplementedError
-            
-            generate_token_list.append(next_token_idx.item())
-            if metric_criterion == "entropy_top2":
-                token_document_idx.append(k[0].item() - 1)
-            else:
-                token_document_idx.append(k.item() - 1)
-            if next_token_idx == self.tokenizer.eos_token_id:
-                break 
-
-            input_ids = next_token_idx.tile(n, 1)
-            attention_mask = torch.cat([attention_mask, torch.ones(n, 1, dtype=torch.long, device=self.device)], dim=-1)
-        response = self.tokenizer.decode(generate_token_list, skip_special_tokens=True)
-        return token_document_idx, generate_token_list,  response, None
 
     @torch.inference_mode()
     def clehe_using_logits(self, prompt_template: str, prompt_template_wo_results: str, question: str, document_texts: List[str], max_tokens=100, beta=0., temp_cpmi = 0.1, metric_criterion = "entropy", temperature = 0.5, sampling_method = "greedy", alpha=0.0, candidate_layers=[16], reweight_logit=False):
@@ -144,7 +87,7 @@ class ParallelDecoding(object):
         print(max_tokens)
         # print(metric_criterion)
         # print(alpha,beta)
-        inputs = self.tokenizer(batch, padding='longest', return_tensors='pt').to(self.device)
+        inputs = self.tokenizer(batch, return_tensors='pt').to(self.device)
         input_ids = inputs.input_ids
         n = input_ids.shape[0]
         attention_mask = inputs.attention_mask
