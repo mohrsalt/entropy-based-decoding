@@ -52,7 +52,10 @@ def main(
 
     data=json.loads(data)
     pattern = r'##(Passages\d+):([\s\S]+?)(?=##|\Z)'
-    
+    device = torch.device("cuda")
+    pd_ojbect = ParallelDecoding(model=model, tokenizer=tokenizer, device=device, using_norm=False,using_entropy=True)
+            
+    generate_func = pd_ojbect.clehe_using_logits
     for idx,i in enumerate(data):
 
         kldout=[]
@@ -102,10 +105,7 @@ def main(
             documents_texts = [f"(Title: {document.title}) {document.text}" for document in documents]
             all_model_documents_texts.append(documents_texts)
             questions.append(question)
-            device = torch.device("cuda")
-            pd_ojbect = ParallelDecoding(model=model, tokenizer=tokenizer, device=device, using_norm=False,using_entropy=True)
-            
-            generate_func = pd_ojbect.clehe_using_logits
+####
             print(len(questions))
             for question, documents_texts in tqdm(zip(questions, all_model_documents_texts)):
                     print(question)
