@@ -105,7 +105,7 @@ def main(
             documents_texts = [f"(Title: {document.title}) {document.text}" for document in documents]
             all_model_documents_texts.append(documents_texts)
             questions.append(question)
-####
+
             print(len(questions))
             for question, documents_texts in tqdm(zip(questions, all_model_documents_texts)):
                     print(question)
@@ -117,6 +117,7 @@ def main(
                                         sampling_method="greedy", alpha=0.1,
                                         candidate_layers=[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32],
                                         reweight_logit=False)
+                    torch.cuda.empty_cache()
                     kldout.append(response)
         i["outputs"]=kldout
 
