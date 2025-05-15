@@ -107,6 +107,8 @@ def main(
             
             generate_func = pd_ojbect.clehe_using_logits
             for question, documents_texts in tqdm(zip(questions, all_model_documents_texts)):
+                    print(question)
+                    print(len(documents_texts))
         
                     _, _, response, _ = generate_func(prompt_template=prompt_template, prompt_template_wo_results=prompt_template_wo_results,
                                         question=question, document_texts=documents_texts, max_tokens=800,
