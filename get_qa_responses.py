@@ -40,6 +40,7 @@ def main(
     logger.info("Loading tokenizer")
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
+    tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct",quantization_config=quantization_config, torch_dtype="auto")
 
 

@@ -11,6 +11,7 @@ class ParallelDecoding(object):
     def __init__(self, model: str, tokenizer: str, device: torch.device, using_norm=False, using_entropy=False):
         self.model = model
         self.tokenizer = tokenizer
+        
 
         self.device = device
         self.using_norm = using_norm
