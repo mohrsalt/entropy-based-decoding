@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 class ParallelDecoding(object):
 
     def __init__(self, model: str, tokenizer: str, device: torch.device, using_norm=False, using_entropy=False):
-        self.model = AutoModelForCausalLM.from_pretrained(model, torch_dtype=torch.bfloat16).to(device)
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer)
+        self.model = model
+        self.tokenizer = tokenizer
 
         self.device = device
         self.using_norm = using_norm
@@ -87,7 +87,7 @@ class ParallelDecoding(object):
         print(max_tokens)
         # print(metric_criterion)
         # print(alpha,beta)
-        inputs = self.tokenizer(batch, return_tensors='pt').to(self.device)
+        inputs = self.tokenizer(batch, padding=True,return_tensors='pt').to(self.device)
         input_ids = inputs.input_ids
         n = input_ids.shape[0]
         attention_mask = inputs.attention_mask

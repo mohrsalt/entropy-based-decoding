@@ -1,4 +1,4 @@
-torch==2.1.2
-transformers==4.40.2
-faiss==1.6.5
--e git+https://github.com/nelson-liu/lost-in-the-middle.git#egg=lost_in_the_middle
+torch
+transformers
+
+

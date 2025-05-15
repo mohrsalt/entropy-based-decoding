@@ -14,7 +14,7 @@ import sys
 from copy import deepcopy
 from typing import List
 from utils.decoding_utils import ParallelDecoding
-from lost_in_the_middle.metrics import best_subspan_em
+
 import re
 import torch
 from tqdm import tqdm
@@ -22,13 +22,11 @@ from transformers import AutoTokenizer,AutoModelForCausalLM
 from transformers import BitsAndBytesConfig
 from collections import defaultdict
 import heapq
-import jsonlines
+
 import time 
 
-from xopen import xopen
-from lost_in_the_middle.prompting import (
+from lostinmid import (
     Document,
-    get_closedbook_qa_prompt,
     get_qa_prompt,
 )
 
@@ -48,7 +46,7 @@ def main(
     prompt_template = "Write a high-quality answer for the given question using only the provided search results.\n\n{search_results}\n\nQuestion: {question}\nAnswer:"
     prompt_template_wo_results = "Write a high-quality answer for the given question.\n\nQuestion: {question}\nAnswer:"
 
-    with open('raginftemplate','r') as file:
+    with open('/home/users/ntu/mohor001/raginftemplate.json','r') as file:
         data=file.read()
 
     data=json.loads(data)
@@ -102,7 +100,7 @@ def main(
             all_model_documents_texts.append(documents_texts)
             questions.append(question)
             device = torch.device("cuda")
-            pd_ojbect = ParallelDecoding(model_path=model, tokenizer_path=tokenizer, device=device, using_norm=False,using_entropy=True)
+            pd_ojbect = ParallelDecoding(model=model, tokenizer=tokenizer, device=device, using_norm=False,using_entropy=True)
             
             generate_func = pd_ojbect.clehe_using_logits
             for question, documents_texts in tqdm(zip(questions, all_model_documents_texts)):
@@ -116,7 +114,7 @@ def main(
                     kldout.append(response)
         i["outputs"]=kldout
 
-    with open("RagGen/Rag1.json", "w") as kld_file:
+    with open("kldgen.json", "w") as kld_file:
         json.dump(data, kld_file, indent=4)
 
 
@@ -147,3 +145,4 @@ if __name__ == "__main__":
     main(
     )
     logger.info("finished running %s", sys.argv[0])
+
