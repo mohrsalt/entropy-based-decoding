@@ -67,22 +67,22 @@ def main(
             matches = re.findall(pattern, j)
             ctxs=[]
             ttle=None
-            for i, match in enumerate(matches, 1):
-                if(i!=1 and i!=4 and i!=7 and i!=10):
+            for ii, match in enumerate(matches, 1):
+                if(ii!=1 and ii!=4 and ii!=7 and ii!=10):
                      continue
-                if(i<4):
+                if(ii<4):
                     ttle="Online Tutorials"
-                elif(i>3 and i<7):
+                elif(ii>3 and ii<7):
                     ttle="Github Repos"
-                elif(i>6 and i<10):
+                elif(ii>6 and ii<10):
                     ttle="Programming Solutions"
                 else:
                     ttle="Library Documentations"
-                if(i==3):
+                if(ii==3):
                     m=match[1][::-1].replace(":sopeR buhtiG#", "", 1)[::-1]
-                elif(i==6):
+                elif(ii==6):
                     m=match[1][::-1].replace(":snoituloS gnimmargorP#", "", 1)[::-1]
-                elif(i==9):
+                elif(ii==9):
                     m=match[1][::-1].replace(":snoitatnemucoD yrarbiL#", "", 1)[::-1] ##Change here 
                 else:
                     m=match[1]
