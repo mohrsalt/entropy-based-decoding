@@ -68,6 +68,8 @@ def main(
             ctxs=[]
             ttle=None
             for i, match in enumerate(matches, 1):
+                if(i!=1 and i!=4 and i!=7 and i!=10):
+                     continue
                 if(i<4):
                     ttle="Online Tutorials"
                 elif(i>3 and i<7):
