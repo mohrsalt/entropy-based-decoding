@@ -106,19 +106,18 @@ def main(
             pd_ojbect = ParallelDecoding(model=model, tokenizer=tokenizer, device=device, using_norm=False,using_entropy=True)
             
             generate_func = pd_ojbect.clehe_using_logits
-            print(len(questions))
+            
             
             for question, documents_texts in tqdm(zip(questions, all_model_documents_texts)):
-                    print(question)
-                    print(len(documents_texts))
-        
+
+                    print("Response here: ")
                     _, _, response, _ = generate_func(prompt_template=prompt_template, prompt_template_wo_results=prompt_template_wo_results,
                                         question=question, document_texts=documents_texts, max_tokens=800,
                                         beta=0.25, temp_cpmi=0.1, metric_criterion="weighted_entropy", temperature=1e-4,
                                         sampling_method="greedy", alpha=0.1,
                                         candidate_layers=[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32],
                                         reweight_logit=False)
-                    
+                    print(response)
                     kldout.append(response)
             torch.cuda.empty_cache()
         i["outputs"]=kldout
