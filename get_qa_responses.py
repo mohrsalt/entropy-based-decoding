@@ -54,7 +54,8 @@ def main(
     pattern = r'##(Passages\d+):([\s\S]+?)(?=##|\Z)'
     
     for idx,i in enumerate(data):
-
+        if(idx==2):
+		    break
         kldout=[]
         for id2,j in enumerate(i["full_queries"]):
             
