@@ -107,6 +107,7 @@ def main(
             
             generate_func = pd_ojbect.clehe_using_logits
             print(len(questions))
+            
             for question, documents_texts in tqdm(zip(questions, all_model_documents_texts)):
                     print(question)
                     print(len(documents_texts))
