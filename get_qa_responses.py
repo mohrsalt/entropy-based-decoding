@@ -49,7 +49,7 @@ def demo_fn(rank, args, cfg, dataset):
         "meta-llama/Llama-3.1-8B-Instruct",
         quantization_config=quantization_config,
         torch_dtype="auto"
-    ).to(rank)
+    )
     model = DDP(model, device_ids=[rank])
 
     prompt_template = "Write a high-quality answer for the given question using only the provided search results.\n\n{search_results}\n\nQuestion: {question}\nAnswer:"
