@@ -41,16 +41,17 @@ def format_chat_prompt(message: str):
 
 def demo_fn(rank, args, cfg, dataset):
     setup(rank, world_size=torch.cuda.device_count(), args=args)
+    torch.cuda.set_device(rank)  # <- This is crucial
 
-    quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
     tokenizer.pad_token = tokenizer.eos_token
+
     model = AutoModelForCausalLM.from_pretrained(
         "meta-llama/Llama-3.1-8B-Instruct",
-        quantization_config=quantization_config,
-        torch_dtype="auto"
-    )
-    model = DDP(model, device_ids=[rank])
+        torch_dtype=torch.float16  # Avoid bitsandbytes for DDP
+    ).to(f"cuda:{rank}")
+
+    model = DDP(model, device_ids=[rank], output_device=rank)
 
     prompt_template = "Write a high-quality answer for the given question using only the provided search results.\n\n{search_results}\n\nQuestion: {question}\nAnswer:"
     prompt_template_wo_results = "Write a high-quality answer for the given question.\n\nQuestion: {question}\nAnswer:"
