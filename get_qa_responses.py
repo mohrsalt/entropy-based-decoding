@@ -42,14 +42,14 @@ def format_chat_prompt(message: str):
 def demo_fn(rank, args, cfg, dataset):
     setup(rank, world_size=torch.cuda.device_count(), args=args)
     torch.cuda.set_device(rank)  # <- This is crucial
-
-    tokenizer = AutoTokenizer.from_pretrained("neuralmagic/Meta-Llama-3.1-8B-Instruct-quantized.w8a16")
+    quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+    tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
     tokenizer.pad_token = tokenizer.eos_token
 
     model = AutoModelForCausalLM.from_pretrained(
-        "neuralmagic/Meta-Llama-3.1-8B-Instruct-quantized.w8a16",
-        torch_dtype=torch.float16,
-         
+        "meta-llama/Llama-3.1-8B-Instruct",
+        quantization_config=quantization_config,
+        torch_dtype="auto"
     ).to(f"cuda:{rank}")
 
     model = DDP(model, device_ids=[rank], output_device=rank)
