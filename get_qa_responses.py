@@ -67,7 +67,7 @@ def demo_fn(rank, args, cfg, dataset):
             ctxs = []
 
             for ii, match in enumerate(matches, 1):
-                if ii not in [1, 2, 4, 5, 7, 8, 10, 11]:
+                if ii not in [1, 4, 7, 10]:
                     continue
                 title_map = {1: "Online Tutorials", 2: "Online Tutorials", 4: "Github Repos", 5: "Github Repos",
                              7: "Programming Solutions", 8: "Programming Solutions", 10: "Library Documentations", 11: "Library Documentations"}
