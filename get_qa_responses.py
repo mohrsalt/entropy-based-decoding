@@ -50,9 +50,10 @@ def demo_fn(rank, args, cfg, dataset):
         "meta-llama/Llama-3.1-8B-Instruct",
         quantization_config=quantization_config,
         torch_dtype="auto"
-    ).to(f"cuda:{rank}")
-
-    model = DDP(model, device_ids=[rank], output_device=rank)
+    )
+#.to(f"cuda:{rank}")
+#, device_ids=[rank], output_device=rank
+    model = DDP(model)
 
     prompt_template = "Write a high-quality answer for the given question using only the provided search results.\n\n{search_results}\n\nQuestion: {question}\nAnswer:"
     prompt_template_wo_results = "Write a high-quality answer for the given question.\n\nQuestion: {question}\nAnswer:"
