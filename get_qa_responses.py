@@ -48,7 +48,8 @@ def demo_fn(rank, args, cfg, dataset):
 
     model = AutoModelForCausalLM.from_pretrained(
         "meta-llama/Llama-3.1-8B-Instruct",
-        torch_dtype=torch.float16  # Avoid bitsandbytes for DDP
+        torch_dtype=torch.float16,
+         load_in_8bit=True # Avoid bitsandbytes for DDP
     ).to(f"cuda:{rank}")
 
     model = DDP(model, device_ids=[rank], output_device=rank)
