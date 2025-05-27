@@ -116,7 +116,7 @@ def demo_fn(rank, args, cfg, dataset):
                 kldout.append(response)
             torch.cuda.empty_cache()
         dataset[data_idx]["outputs"] = kldout
-
+        torch.cuda.empty_cache()
     if get_rank() == 0:
         with open("kldgen.json", "w") as f:
             json.dump(dataset, f, indent=4)
