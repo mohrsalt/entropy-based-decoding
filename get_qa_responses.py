@@ -113,7 +113,7 @@ def demo_fn(rank, args, cfg, dataset):
                     reweight_logit=False)
                 # print(f"[RANK {get_rank()}] Response: {response}")
                 kldout.append(response)
-
+            torch.cuda.empty_cache()
         dataset[data_idx]["outputs"] = kldout
 
     if get_rank() == 0:
