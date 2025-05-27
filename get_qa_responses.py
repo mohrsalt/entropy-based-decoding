@@ -60,6 +60,7 @@ def demo_fn(rank, args, cfg, dataset):
 
     pattern = r'##(Passages\d+):([\s\S]+?)(?=##|\Z)'
     for data_idx in range(rank, len(dataset), torch.cuda.device_count()):
+        print("Rankk: ",get_rank())
         i = dataset[data_idx]
         kldout = []
         for id2, j in enumerate(i["full_queries"]):
@@ -110,7 +111,7 @@ def demo_fn(rank, args, cfg, dataset):
                     alpha=0.1,
                     candidate_layers=[2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32],
                     reweight_logit=False)
-                print(f"[RANK {get_rank()}] Response: {response}")
+                # print(f"[RANK {get_rank()}] Response: {response}")
                 kldout.append(response)
 
         dataset[data_idx]["outputs"] = kldout
