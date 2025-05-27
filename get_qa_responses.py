@@ -110,7 +110,7 @@ def demo_fn(rank, args, cfg, dataset):
                     alpha=0.1,
                     candidate_layers=[2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32],
                     reweight_logit=False)
-                print(f"[RANK {rank}] Response: {response}")
+                print(f"[RANK {get_rank()}] Response: {response}")
                 kldout.append(response)
 
         dataset[data_idx]["outputs"] = kldout
