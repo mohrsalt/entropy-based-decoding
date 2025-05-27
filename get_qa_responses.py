@@ -60,6 +60,7 @@ def demo_fn(rank, args, cfg, dataset):
 
     pattern = r'##(Passages\d+):([\s\S]+?)(?=##|\Z)'
     for data_idx in range(rank, len(dataset), torch.cuda.device_count()):
+        print("data idx: ",data_idx)
         print("Rankk: ",get_rank())
         i = dataset[data_idx]
         kldout = []
