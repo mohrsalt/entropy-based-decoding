@@ -42,7 +42,7 @@ def main(
     tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct",quantization_config=quantization_config, torch_dtype="auto")
     distributed_state = PartialState()
-    batch_size = 2
+    batch_size = 1
      
 
     prompt_template = "Write a high-quality answer for the given question using only the provided search results.\n\n{search_results}\n\nQuestion: {question}\nAnswer:"
@@ -63,8 +63,8 @@ def main(
 ]
         with distributed_state.split_between_processes(split_prompts, apply_padding=True) as batched_prompts:
             print("Length of batch: ",len(batched_prompts))
-            for id2,j in tqdm(enumerate(batched_prompts), desc=f"Generating completions on device {distributed_state.device}"):
-                print(len(j))
+            for id2,jb in tqdm(enumerate(batched_prompts), desc=f"Generating completions on device {distributed_state.device}"):
+                j=jb[0]
                 print(f"Generating completions on device inner {distributed_state.device}")    
                 
                 prompts = []
