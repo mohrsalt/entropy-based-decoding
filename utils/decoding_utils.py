@@ -164,6 +164,6 @@ class ParallelDecoding(object):
         response = self.tokenizer.decode(generate_token_list, skip_special_tokens=True)
         # print(top1_idx_consistent_ratio_list)
         top1_idx_consistent_ratio = sum(top1_idx_consistent_ratio_list) / len(top1_idx_consistent_ratio_list)
-
+        torch.cuda.empty_cache()
         return token_document_idx, generate_token_list, response, top1_idx_consistent_ratio
 
