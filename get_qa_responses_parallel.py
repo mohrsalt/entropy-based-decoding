@@ -28,6 +28,8 @@ from lostinmid import (
     Document,
     get_qa_prompt,
 )
+import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
 logger = logging.getLogger(__name__)
 random.seed(0)
