@@ -64,7 +64,7 @@ def main(
         with distributed_state.split_between_processes(split_prompts, apply_padding=True) as batched_prompts:
             for id2,j in tqdm(enumerate(batched_prompts), desc=f"Generating completions on device {distributed_state.device}"):
                 print(f"Generating completions on device inner {distributed_state.device}")    
-                j = j.to(distributed_state.device)
+                
                 prompts = []
                 all_model_documents = []
 
@@ -109,7 +109,8 @@ def main(
                 documents_texts = [f"(Title: {document.title}) {document.text}" for document in documents]
                 all_model_documents_texts.append(documents_texts)
                 questions.append(question)
-                device = torch.device("cuda")
+                device = distributed_state.device 
+                # change above
                 pd_ojbect = ParallelDecoding(model=model, tokenizer=tokenizer, device=device, using_norm=False,using_entropy=True)
                 
                 generate_func = pd_ojbect.clehe_using_logits
