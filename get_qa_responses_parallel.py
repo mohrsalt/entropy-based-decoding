@@ -59,7 +59,7 @@ def main(
             break
         kldout=[]
         split_prompts = [
-    i["full_queries"][i : i + batch_size] for i in range(0, len(i["full_queries"]), batch_size)
+    i["full_queries"][ikk : ikk + batch_size] for ikk in range(0, len(i["full_queries"]), batch_size)
 ]
         with distributed_state.split_between_processes(split_prompts, apply_padding=True) as batched_prompts:
             for id2,j in tqdm(enumerate(batched_prompts, desc=f"Generating completions on device {distributed_state.device}")):
