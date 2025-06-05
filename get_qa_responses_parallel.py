@@ -130,7 +130,12 @@ def main(
                                                 reweight_logit=False)
                             print(response)
                             kldout.append(response)
-                    
+                            del response, generate_func, pd_ojbect, documents_texts, question, documents, ctxs, all_model_documents_texts
+                            import gc
+                            gc.collect()
+                            torch.cuda.empty_cache()
+                            torch.cuda.ipc_collect()
+
         i["outputs"]=gather_object(kldout)
     if distributed_state.is_main_process:
     
