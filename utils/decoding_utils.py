@@ -101,6 +101,7 @@ class ParallelDecoding(object):
 
         for i in range(max_tokens):
             print("iiiiiiippppppiiiiiii")
+            print(self.device)
             outputs = self.model(input_ids=input_ids,
                             attention_mask=attention_mask,
                             return_dict=True,
