@@ -139,6 +139,10 @@ def main(
                             torch.cuda.ipc_collect()
 
         i["outputs"]=gather_object(kldout)
+        del kldout,split_prompts
+        gc.collect()
+        torch.cuda.empty_cache()
+        torch.cuda.ipc_collect()
     if distributed_state.is_main_process:
     
         with open("kldgen.json", "w") as kld_file:
