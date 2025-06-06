@@ -114,7 +114,7 @@ def main(
                     documents_texts = [f"(Title: {document.title}) {document.text}" for document in documents]
                     all_model_documents_texts.append(documents_texts)
                     questions.append(question)
-                    device = distributed_state.device 
+                    device = torch.device("cuda") 
                     # change above
                     pd_ojbect = ParallelDecoding(model=model, tokenizer=tokenizer, device=device, using_norm=False,using_entropy=True)
                     
@@ -139,10 +139,7 @@ def main(
                             torch.cuda.ipc_collect()
 
         i["outputs"]=gather_object(kldout)
-        del kldout,split_prompts
-        gc.collect()
-        torch.cuda.empty_cache()
-        torch.cuda.ipc_collect()
+
     if distributed_state.is_main_process:
     
         with open("kldgen.json", "w") as kld_file:
