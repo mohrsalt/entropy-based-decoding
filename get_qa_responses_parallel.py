@@ -114,7 +114,7 @@ def main(
                     documents_texts = [f"(Title: {document.title}) {document.text}" for document in documents]
                     all_model_documents_texts.append(documents_texts)
                     questions.append(question)
-                    device = torch.device("cuda") 
+                    device = torch.device(f"{distributed_state.device}") 
                     # change above
                     pd_ojbect = ParallelDecoding(model=model, tokenizer=tokenizer, device=device, using_norm=False,using_entropy=True)
                     
