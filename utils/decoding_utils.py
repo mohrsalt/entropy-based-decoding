@@ -100,7 +100,7 @@ class ParallelDecoding(object):
         top1_idx_consistent_ratio_list = [] # some self-defiend logging metirc, will not influence the main logic
 
         for i in range(max_tokens):
-            
+            print("iiiiiiippppppiiiiiii")
             outputs = self.model(input_ids=input_ids,
                             attention_mask=attention_mask,
                             return_dict=True,
