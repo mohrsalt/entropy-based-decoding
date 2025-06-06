@@ -107,6 +107,7 @@ class ParallelDecoding(object):
                             use_cache=True,
                             output_hidden_states=True,
                             past_key_values=past_key_values)
+            print("tttttttttestttttttt")
             past_key_values = outputs.past_key_values
             candidate_query_logits = self.get_specific_layer_logits(outputs.hidden_states, candidate_layers)
             logits = outputs.logits[:, -1, :] # (bsz, vocab_size)
