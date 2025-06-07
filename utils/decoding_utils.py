@@ -88,8 +88,8 @@ class ParallelDecoding(object):
         print(max_tokens)
         # print(metric_criterion)
         # print(alpha,beta)
-        inputs = self.tokenizer(batch, padding=True,return_tensors='pt')
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+        inputs = self.tokenizer(batch, padding=True,return_tensors='pt').to(self.device)
+        # inputs = {k: v.to(self.device) for k, v in inputs.items()}
         input_ids = inputs.input_ids
         n = input_ids.shape[0]
         attention_mask = inputs.attention_mask
@@ -103,6 +103,7 @@ class ParallelDecoding(object):
         for i in range(max_tokens):
             print("iiiiiiippppppiiiiiii")
             print(self.device)
+            print(input_ids.device)
             outputs = self.model(input_ids=input_ids,
                             attention_mask=attention_mask,
                             return_dict=True,
