@@ -104,6 +104,7 @@ class ParallelDecoding(object):
             print("iiiiiiippppppiiiiiii")
             print(self.device)
             print(input_ids.device)
+       
             print(next(self.model.parameters()).device)
 
             outputs = self.model(input_ids=input_ids,

@@ -39,10 +39,7 @@ def main(
 ):
 
     logger.info("Loading tokenizer")
-    quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-    tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
-    tokenizer.pad_token = tokenizer.eos_token
-    model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct",quantization_config=quantization_config, torch_dtype="auto")
+
     distributed_state = PartialState()
     batch_size = 2
      
@@ -65,6 +62,10 @@ def main(
 ]
         with distributed_state.split_between_processes(split_prompts, apply_padding=True) as batched_prompts:
             print("Length of batch: ",len(batched_prompts))
+            quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+            tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
+            tokenizer.pad_token = tokenizer.eos_token
+            model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct",quantization_config=quantization_config, torch_dtype="auto")
             for id2,jb in tqdm(enumerate(batched_prompts), desc=f"Generating completions on device {distributed_state.device}"):
                 for ipo,j in enumerate(jb):
                     
