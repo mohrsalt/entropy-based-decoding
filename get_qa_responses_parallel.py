@@ -128,7 +128,7 @@ def main(
 
                             print("Response here: ")
                             _, _, response, _ = generate_func(prompt_template=prompt_template, prompt_template_wo_results=prompt_template_wo_results,
-                                                question=question, document_texts=documents_texts, max_tokens=800,
+                                                question=question, document_texts=documents_texts, max_tokens=20,
                                                 beta=0.25, temp_cpmi=0.1, metric_criterion="weighted_entropy", temperature=1e-4,
                                                 sampling_method="greedy", alpha=0.1,
                                                 candidate_layers=[2,10,24,30],
