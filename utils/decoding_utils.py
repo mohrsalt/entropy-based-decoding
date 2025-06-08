@@ -85,11 +85,11 @@ class ParallelDecoding(object):
         batch_doc = [prompt_template.format(search_results=document, question=question) for document in document_texts]
         first_ele = prompt_template_wo_results.format(question=question)
         batch = [first_ele] + batch_doc
+        print("Batch lenn: ",len(batch))
         print(max_tokens)
         # print(metric_criterion)
         # print(alpha,beta)
         inputs = self.tokenizer(batch, padding=True,return_tensors='pt').to(self.device)
-        # inputs = {k: v.to(self.device) for k, v in inputs.items()}
         input_ids = inputs.input_ids
         n = input_ids.shape[0]
         attention_mask = inputs.attention_mask
