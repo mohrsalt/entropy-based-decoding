@@ -116,7 +116,8 @@ def main(
                                         question=question, document_texts=documents_texts, max_tokens=800,
                                         beta=0.25, temp_cpmi=0.1, metric_criterion="weighted_entropy", temperature=1e-4,
                                         sampling_method="greedy", alpha=0.1,
-                                        candidate_layers=[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32],
+                                        # candidate_layers=[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32],
+                                        candidate_layers=[2,10,24,30],
                                         reweight_logit=False)
                     print(response)
                     kldout.append(response)
@@ -125,7 +126,6 @@ def main(
 
     with open("kldgen.json", "w") as kld_file:
         json.dump(data, kld_file, indent=4)
-
 
 
 
