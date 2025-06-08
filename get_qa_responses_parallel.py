@@ -62,7 +62,7 @@ def main(
 ]
         with distributed_state.split_between_processes(split_prompts, apply_padding=True) as batched_prompts:
             print("Length of batch: ",len(batched_prompts))
-            quantization_config = BitsAndBytesConfig(load_in_4bit=True)
+            quantization_config = BitsAndBytesConfig(load_in_8bit=True)
             tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
             tokenizer.pad_token = tokenizer.eos_token
             model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct",quantization_config=quantization_config, torch_dtype="auto")
