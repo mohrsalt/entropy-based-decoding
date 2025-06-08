@@ -66,7 +66,7 @@ def main(
             tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
             tokenizer.pad_token = tokenizer.eos_token
             model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct",quantization_config=quantization_config, torch_dtype="auto")
-            for id2,jb in tqdm(enumerate(batched_prompts), desc=f"Generating completions on device {distributed_state.device}"):
+            for id2,jb in tqdm(enumerate(batched_prompts), desc=f"Generating completionssss on device {distributed_state.device}"):
                 for ipo,j in enumerate(jb):
                     
                     print(f"Generating completions on device inner {distributed_state.device}")    
