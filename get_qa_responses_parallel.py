@@ -85,6 +85,7 @@ def main(
                     for ii, match in enumerate(matches, 1):
                         if(ii!=1 and ii!=2 and ii!=4 and ii!=5 and ii!=7 and ii!=8 and ii!=10 and ii!=11):
                             continue
+                        print("match: ",ii)
                         if(ii<4):
                             ttle="Online Tutorials"
                         elif(ii>3 and ii<7):
