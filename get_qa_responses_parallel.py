@@ -83,7 +83,7 @@ def main(
                     ctxs=[]
                     ttle=None
                     for ii, match in enumerate(matches, 1):
-                        if(ii!=1 and ii!=2 and ii!=4 and ii!=5 and ii!=7 and ii!=8 and ii!=10 and ii!=11):
+                        if(ii==1 or ii==2 or ii==4 or ii==5 or ii==7 or ii==8 or ii==10 or ii==11):
                             continue
                         print("match: ",ii)
                         if(ii<4):
